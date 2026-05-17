@@ -106,6 +106,15 @@ const Cover = styled(Image)`
   image-rendering: pixelated;
 `;
 
+const Embed = styled.iframe`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: ${({ theme }) => theme.color.canvas};
+`;
+
 const CoverPlaceholder = styled.div`
   position: absolute;
   inset: 0;
@@ -150,7 +159,6 @@ export function GameShell({
   meta: GameMeta;
   children: React.ReactNode;
 }) {
-  const techLine = meta.tech.join(" · ");
   return (
     <Section>
       <Container>
@@ -158,13 +166,12 @@ export function GameShell({
         <Header>
           <TopRow>
             <span>{meta.year}</span>
-            {techLine && <span>{techLine}</span>}
           </TopRow>
           <Title>{meta.title}</Title>
           {meta.summary && <Lead>{meta.summary}</Lead>}
-          {(meta.links.live || meta.links.repo) && (
+          {((meta.links.live && !meta.embed) || meta.links.repo) && (
             <LinksRow>
-              {meta.links.live && (
+              {meta.links.live && !meta.embed && (
                 <ExternalLink
                   href={meta.links.live}
                   target="_blank"
@@ -186,7 +193,14 @@ export function GameShell({
           )}
         </Header>
         <CoverWrap>
-          {meta.cover ? (
+          {meta.embed ? (
+            <Embed
+              src={meta.embed}
+              title={`${meta.title} (live)`}
+              referrerPolicy="no-referrer-when-downgrade"
+              allow="clipboard-read; clipboard-write; fullscreen"
+            />
+          ) : meta.cover ? (
             <Cover
               src={meta.cover}
               alt={`${meta.title} cover`}

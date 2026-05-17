@@ -115,7 +115,6 @@ export function GameCard({ game }: { game: GameMeta }) {
       <Meta>
         <TopRow>
           <span>{game.year}</span>
-          {game.tech.length > 0 && <span>{game.tech.join(" · ")}</span>}
         </TopRow>
         <Title>{game.title}</Title>
         {game.summary && <Summary>{game.summary}</Summary>}

@@ -1,0 +1,43 @@
+---
+title: Stardew Search
+year: 2026
+summary: AI-powered search for Stardew Valley.
+tech: [Next.js 16, React 19, TypeScript, Tailwind 4, OpenAI, Serwist PWA]
+cover: /stardew.png
+embed: https://stardew-pearl.vercel.app
+featured: true
+---
+
+Type "ancient fruit" or "community center" or "Sturgeon"; anything from
+Stardew Valley and get a clean answer back, not a wall of links to chase.
+A search box for the game's entire vocabulary that understands what you
+meant, not just what you typed.
+
+## What it does
+
+- One box. Items, characters, quests, events, recipes — all answered in
+  plain language.
+- Installs on phone or desktop(PWA). Opens from the home screen, behaves like a
+  native app, works on slow connections.
+
+## How it's built
+
+The interesting part isn't the search — it's the AI/ML layer sitting in
+front of it. A plain query like "best money maker" gets translated into
+specific game terms ("Wine", "Ancient Fruit", "Truffle Oil") before anything
+is looked up. The candidates come back, the same model re-ranks them by
+relevance, and the top hits are enriched with their infoboxes and images.
+
+For one-shot factual questions — "when is Linus's birthday", "where do you
+catch Sturgeon", "how much does a Crystalarium cost" — a separate extraction
+pass pulls the bare answer out of the top result and surfaces it above the
+summary.
+
+## Stack
+
+- **Next.js** + **React**, App Router.
+- **TypeScript** end-to-end.
+- **Tailwind** for styling.
+- **OpenAI** for the language-model re-rank.
+- **Serwist** for the PWA layer — service worker, installable shell.
+- **Vitest** for tests.

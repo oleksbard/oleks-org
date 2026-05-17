@@ -16,6 +16,7 @@ export type GameMeta = {
   summary?: string;
   tech: string[];
   cover?: string;
+  embed?: string;
   links: GameLinks;
   featured: boolean;
 };
@@ -26,6 +27,7 @@ type RawFrontmatter = {
   summary?: string;
   tech?: string[];
   cover?: string;
+  embed?: string;
   links?: GameLinks;
   featured?: boolean;
 };
@@ -40,6 +42,7 @@ async function readMeta(slug: string): Promise<GameMeta> {
     summary: fm.summary,
     tech: fm.tech ?? [],
     cover: fm.cover,
+    embed: fm.embed,
     links: fm.links ?? {},
     featured: fm.featured ?? false,
   };
