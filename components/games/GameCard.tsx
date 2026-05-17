@@ -94,7 +94,13 @@ const Summary = styled.p`
   line-height: 1.5;
 `;
 
-export function GameCard({ game }: { game: GameMeta }) {
+export function GameCard({
+  game,
+  showYear = true,
+}: {
+  game: GameMeta;
+  showYear?: boolean;
+}) {
   return (
     <Card href={`/games/${game.slug}`}>
       <Cover>
@@ -113,9 +119,11 @@ export function GameCard({ game }: { game: GameMeta }) {
         )}
       </Cover>
       <Meta>
-        <TopRow>
-          <span>{game.year}</span>
-        </TopRow>
+        {showYear && (
+          <TopRow>
+            <span>{game.year}</span>
+          </TopRow>
+        )}
         <Title>{game.title}</Title>
         {game.summary && <Summary>{game.summary}</Summary>}
       </Meta>

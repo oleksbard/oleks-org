@@ -60,7 +60,7 @@ export function FeaturedGames({ games }: { games: GameMeta[] }) {
         </Header>
         <Grid>
           {games.slice(0, 2).map((game) => (
-            <GameCard key={game.slug} game={game} />
+            <GameCard key={game.slug} game={game} showYear={false} />
           ))}
         </Grid>
       </Container>
