@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import { Container } from "@/components/primitives/Container";
 import type { NoteMeta } from "@/lib/content/notes";
+import { formatLongDate } from "@/lib/date";
 
 const Section = styled.section`
   padding-block: ${({ theme }) => theme.space[8]};
@@ -100,7 +101,7 @@ export function LatestNote({ note }: { note: NoteMeta | null }) {
           <SeeAll href="/notes">all notes →</SeeAll>
         </Header>
         <Card href={`/notes/${note.slug}`}>
-          <DateStamp dateTime={note.date}>{note.date}</DateStamp>
+          <DateStamp dateTime={note.date}>{formatLongDate(note.date)}</DateStamp>
           <Body>
             <Title>{note.title}</Title>
             {note.summary && <Summary>{note.summary}</Summary>}

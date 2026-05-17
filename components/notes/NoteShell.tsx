@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Container } from "@/components/primitives/Container";
 import { Prose } from "@/components/primitives/Prose";
 import type { NoteMeta } from "@/lib/content/notes";
+import { formatLongDate } from "@/lib/date";
 
 const Section = styled.section`
   padding-block: ${({ theme }) => theme.space[8]}
@@ -69,7 +70,7 @@ export function NoteShell({
       <Container>
         <Back href="/notes">notes</Back>
         <Header>
-          <DateStamp dateTime={meta.date}>{meta.date}</DateStamp>
+          <DateStamp dateTime={meta.date}>{formatLongDate(meta.date)}</DateStamp>
           <Title>{meta.title}</Title>
         </Header>
         <Prose>{children}</Prose>

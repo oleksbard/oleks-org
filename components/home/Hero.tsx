@@ -120,7 +120,7 @@ export function Hero() {
       <Container>
         <Grid>
           <Text>
-            <Eyebrow>Oleks · 2026</Eyebrow>
+            <Eyebrow>Oleks · Berlin, Germany</Eyebrow>
             <MetaRow>
               <Name>
                 Oleks

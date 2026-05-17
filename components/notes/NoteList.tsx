@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import { Container } from "@/components/primitives/Container";
 import type { NoteMeta } from "@/lib/content/notes";
+import { formatLongDate } from "@/lib/date";
 
 const Section = styled.section`
   min-height: 60vh;
@@ -112,7 +113,7 @@ export function NoteList({ notes }: { notes: NoteMeta[] }) {
             {notes.map((note) => (
               <Item key={note.slug}>
                 <Row href={`/notes/${note.slug}`}>
-                  <DateStamp dateTime={note.date}>{note.date}</DateStamp>
+                  <DateStamp dateTime={note.date}>{formatLongDate(note.date)}</DateStamp>
                   <Body>
                     <NoteTitle>{note.title}</NoteTitle>
                     {note.summary && <Summary>{note.summary}</Summary>}
