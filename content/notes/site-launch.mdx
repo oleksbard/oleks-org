@@ -1,0 +1,17 @@
+---
+title: First note
+date: 2026-05-17
+summary: This site has a notes section now.
+---
+
+This site has a notes section. Short updates, changelog-style — no long
+essays. The MDX pipeline is wired up with `@next/mdx`, with frontmatter
+parsed by `gray-matter` and the body rendered via a dynamic import.
+
+What's working:
+
+- Notes are reverse-chron by date.
+- Frontmatter goes through a typed loader in `lib/content/notes.ts`.
+- The body inherits typography from the shared `<Prose>` wrapper.
+
+More notes when there's something to say.
