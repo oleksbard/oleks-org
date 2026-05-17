@@ -1,17 +1,18 @@
 ---
-title: First note
+title: Hello, and welcome
 date: 2026-05-17
-summary: This site has a notes section now.
+summary: A new corner of the internet; what it's built with and what's next.
 ---
 
-This site has a notes section. Short updates, changelog-style — no long
-essays. The MDX pipeline is wired up with `@next/mdx`, with frontmatter
-parsed by `gray-matter` and the body rendered via a dynamic import.
+This is the first note on my new site. I've been meaning to carve out a small,
+personal corner of the web; somewhere to keep games and side projects,
+photography, and the occasional short write-up. This is that corner.
 
-What's working:
+The stack is intentionally boring:
 
-- Notes are reverse-chron by date.
-- Frontmatter goes through a typed loader in `lib/content/notes.ts`.
-- The body inherits typography from the shared `<Prose>` wrapper.
+- **Next.js 16** (App Router, RSC) with **React 19** and **TypeScript**.
+- **styled-components** for styles, with SSR wired up so there's no FOUC.
+- **MDX** for content — notes and game pages are just files in the repo.
+- **Vercel** for hosting.
 
-More notes when there's something to say.
+More soon.

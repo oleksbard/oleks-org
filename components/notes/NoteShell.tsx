@@ -38,7 +38,6 @@ const Header = styled.header`
   gap: ${({ theme }) => theme.space[3]};
   margin-bottom: ${({ theme }) => theme.space[6]};
   padding-bottom: ${({ theme }) => theme.space[6]};
-  border-bottom: 1px solid ${({ theme }) => theme.color.line};
 `;
 
 const DateStamp = styled.time`

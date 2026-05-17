@@ -4,6 +4,7 @@ import StyledComponentsRegistry from "@/lib/registry";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SITE } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,12 +25,31 @@ const pressStart = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE.url),
   title: {
-    default: "Oleks Bardanov",
-    template: "%s · Oleks Bardanov",
+    default: SITE.name,
+    template: `%s · ${SITE.name}`,
   },
-  description:
-    "Software developer building things on the web with TypeScript, React and Node.",
+  description: SITE.description,
+  openGraph: {
+    type: "website",
+    siteName: SITE.name,
+    url: SITE.url,
+    title: SITE.name,
+    description: SITE.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE.name,
+    description: SITE.description,
+  },
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        { url: "/rss.xml", title: `${SITE.name} · Notes` },
+      ],
+    },
+  },
 };
 
 export default function RootLayout({

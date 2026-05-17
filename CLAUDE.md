@@ -51,11 +51,13 @@ Every route shares the same shell, mounted once in [app/layout.tsx](app/layout.t
 - [components/layout/Header.tsx](components/layout/Header.tsx) — pixel-font wordmark + primary nav (games & projects · photography · notes · about). The first nav item links to `/games` but its label reads "games & projects" — that section holds games plus other side projects. Active state is driven by [components/layout/NavLink.tsx](components/layout/NavLink.tsx) via `usePathname()`.
 - [components/layout/Footer.tsx](components/layout/Footer.tsx) — single Elsewhere group (GitHub, LinkedIn, email, Notes RSS). GitHub and LinkedIn are real; `hello@oleks.dev` and `/rss.xml` are placeholders until real values are wired in.
 - The `<main>` is unstyled in the layout itself; sticky-footer behavior comes from `body { display: grid; grid-template-rows: auto 1fr auto; min-height: 100dvh; }` in [components/primitives/GlobalStyles.tsx](components/primitives/GlobalStyles.tsx). Pages should render a top-level styled `<section>`, not their own `<main>`.
-- Placeholder pages (`/about`) reuse [components/layout/PageStub.tsx](components/layout/PageStub.tsx) — kicker + display title + note + status. They become real pages by swapping the stub for a feature component.
+- Every primary route is now real — no `PageStub` left in use. [components/layout/PageStub.tsx](components/layout/PageStub.tsx) stays as a convenience for any future placeholder routes; delete it once we're sure none are coming.
 
 ### MDX content pipeline
 
 `@next/mdx` is wired up in [next.config.ts](next.config.ts) (`pageExtensions` includes `md` and `mdx`; the export is wrapped in `withMDX(...)`). [mdx-components.tsx](mdx-components.tsx) at the repo root is **required** by Next 16's App Router — removing it breaks all MDX rendering. Keep it minimal; per-route style overrides go in the route's shell component (e.g. wrapping MDX in [components/primitives/Prose.tsx](components/primitives/Prose.tsx)).
+
+`remark-frontmatter` is registered as a remark plugin in `withMDX(...)` so YAML frontmatter is parsed as a `yaml` AST node and dropped from the rendered body — without it, MDX renders the frontmatter block as a paragraph of text. The plugin is passed by **string** (`["remark-frontmatter", ["yaml"]]`) rather than as an imported function, because Turbopack serializes loader options across the JS↔Rust boundary and cannot pass functions. Apply the same string-form convention if you add more remark/rehype plugins. The frontmatter is still parsed independently by `gray-matter` in the loaders ([lib/content/notes.ts](lib/content/notes.ts), [lib/content/games.ts](lib/content/games.ts)); the remark plugin only governs what reaches the rendered output.
 
 Notes live as MDX files under [content/notes/](content/notes/) and are read at request time by [lib/content/notes.ts](lib/content/notes.ts) — an RSC-only loader that:
 
@@ -105,6 +107,18 @@ Visual pipeline (in [components/photography/](components/photography/)):
 - **Lightbox** — `createPortal` into `document.body` so it escapes the section's stacking context. Locks `body { overflow: hidden }` on mount, listens for `Escape` / `ArrowLeft` / `ArrowRight`. Pure CSS keyframe animations (no `motion` dep). The portal is safe because the lightbox is conditionally rendered only after a user click, so it never SSRs.
 
 Filenames become the `alt` text by default (`_` and `-` normalized to spaces). Override after-the-fact by editing the generated `content/photos.ts` if you need richer alts — but expect that change to be overwritten next time the script runs unless you also edit the script's `titleFromFilename`.
+
+### Site metadata, OG, icon, sitemap, RSS
+
+[lib/site.ts](lib/site.ts) is the single source of truth for `url`, `name`, `description`, `email`, and the GitHub/LinkedIn URLs — every metadata/feed/sitemap module pulls from it. `SITE.url` is a placeholder (`https://oleks.dev`); when the real domain ships, update this constant only.
+
+- [app/layout.tsx](app/layout.tsx) sets `metadataBase: new URL(SITE.url)` plus `openGraph` and `twitter` blocks. The `alternates.types["application/rss+xml"]` array advertises the RSS feed to readers.
+- [app/opengraph-image.tsx](app/opengraph-image.tsx) generates the default 1200×630 PNG via `ImageResponse` from `next/og`. JSX is constrained to a `flex` layout (next/og's renderer requires it on parent nodes whose children are multiple text spans). Per-route OG images can be added by dropping `opengraph-image.tsx` into any route segment.
+- [app/icon.tsx](app/icon.tsx) generates the dynamic favicon (32×32). The boilerplate [app/favicon.ico](app/favicon.ico) is still in the repo as a fallback — delete it once you're sure the dynamic icon renders everywhere you care about.
+- [app/sitemap.ts](app/sitemap.ts) emits the sitemap from `STATIC_ROUTES` + dynamic game/note slugs (via the same loaders the pages use). Add a route → add its path to `STATIC_ROUTES`.
+- [app/rss.xml/route.ts](app/rss.xml/route.ts) is the notes feed. The route handler emits RSS 2.0 with `Cache-Control: public, max-age=3600` so CDNs cache it for an hour. The footer already links to `/rss.xml`.
+
+Deferred from this pass (intentional): dark mode (the plan's step-9 dark-mode flip stays off until brand decisions land), and Lighthouse fine-tuning (run locally; the SSR styled-components + `unoptimized` pixel images should already score 95+ on most pages).
 
 ## Maintaining this file
 
