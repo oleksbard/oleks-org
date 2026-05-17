@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
-import { PageStub } from "@/components/layout/PageStub";
+import { getAllGames } from "@/lib/content/games";
+import { GameGrid } from "@/components/games/GameGrid";
 
 export const metadata: Metadata = {
-  title: "Games",
-  description: "Small games I build on the side.",
+  title: "Games & Projects",
+  description: "Small games and other side projects.",
 };
 
-export default function GamesPage() {
-  return (
-    <PageStub
-      kicker="01 · Games"
-      title="Games."
-      note="Small browser games I build on the side. Real entries will appear here as I publish them."
-    />
-  );
+export default async function GamesPage() {
+  const games = await getAllGames();
+  return <GameGrid games={games} />;
 }

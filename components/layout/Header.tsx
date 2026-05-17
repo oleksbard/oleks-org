@@ -45,7 +45,7 @@ export function Header() {
             oleks/
           </Mark>
           <Nav aria-label="Primary">
-            <NavLink href="/games">games</NavLink>
+            <NavLink href="/games">games &amp; projects</NavLink>
             <NavLink href="/photography">photography</NavLink>
             <NavLink href="/notes">notes</NavLink>
             <NavLink href="/about">about</NavLink>

@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import { PageStub } from "@/components/layout/PageStub";
+import { PhotoGrid } from "@/components/photography/PhotoGrid";
+import { photos } from "@/content/photos";
 
 export const metadata: Metadata = {
   title: "Photography",
-  description: "Semi-professional photography — selected frames.",
+  description: "Selected frames from the camera roll.",
 };
 
 export default function PhotographyPage() {
-  return (
-    <PageStub
-      kicker="02 · Photography"
-      title="Frames."
-      note="Selected work from the camera roll. Editorial mosaic with mixed aspect ratios — the gallery and lightbox land soon."
-    />
-  );
+  return <PhotoGrid photos={photos} />;
 }

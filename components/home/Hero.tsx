@@ -108,7 +108,7 @@ const PortraitWrap = styled.div`
 `;
 
 const Portrait = styled(Image)`
-  width: clamp(160px, 36vw, 320px);
+  width: clamp(220px, 44vw, 440px);
   height: auto;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -129,7 +129,7 @@ export function Hero() {
               </Name>
               <Role>
                 Software developer building things on the web with TypeScript,
-                React, and Node.
+                React, Node, and AI.
               </Role>
             </MetaRow>
             <Tagline>
