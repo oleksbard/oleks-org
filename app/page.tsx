@@ -1,6 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { FeaturedGames } from "@/components/home/FeaturedGames";
-import { LatestNote } from "@/components/home/LatestNote";
+import { LatestNotes } from "@/components/home/LatestNotes";
 import { getFeaturedGames } from "@/lib/content/games";
 import { getAllNotes } from "@/lib/content/notes";
 
@@ -9,13 +9,12 @@ export default async function Home() {
     getFeaturedGames(),
     getAllNotes(),
   ]);
-  const latestNote = notes[0] ?? null;
 
   return (
     <>
       <Hero />
       <FeaturedGames games={featured} />
-      <LatestNote note={latestNote} />
+      <LatestNotes notes={notes} />
     </>
   );
 }

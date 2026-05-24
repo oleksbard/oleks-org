@@ -43,8 +43,11 @@ const Card = styled(Link)`
   grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.space[3]};
   padding-block: ${({ theme }) => theme.space[6]};
-  border-top: 1px solid ${({ theme }) => theme.color.line};
   border-bottom: 1px solid ${({ theme }) => theme.color.line};
+
+  &:first-of-type {
+    border-top: 1px solid ${({ theme }) => theme.color.line};
+  }
 
   &:hover h2 {
     color: ${({ theme }) => theme.color.accent};
@@ -91,8 +94,8 @@ const Summary = styled.p`
   max-width: 60ch;
 `;
 
-export function LatestNote({ note }: { note: NoteMeta | null }) {
-  if (!note) return null;
+export function LatestNotes({ notes }: { notes: NoteMeta[] }) {
+  if (notes.length === 0) return null;
   return (
     <Section>
       <Container>
@@ -100,13 +103,15 @@ export function LatestNote({ note }: { note: NoteMeta | null }) {
           <Kicker>Latest</Kicker>
           <SeeAll href="/notes">all notes →</SeeAll>
         </Header>
-        <Card href={`/notes/${note.slug}`}>
-          <DateStamp dateTime={note.date}>{formatLongDate(note.date)}</DateStamp>
-          <Body>
-            <Title>{note.title}</Title>
-            {note.summary && <Summary>{note.summary}</Summary>}
-          </Body>
-        </Card>
+        {notes.slice(0, 3).map((note) => (
+          <Card key={note.slug} href={`/notes/${note.slug}`}>
+            <DateStamp dateTime={note.date}>{formatLongDate(note.date)}</DateStamp>
+            <Body>
+              <Title>{note.title}</Title>
+              {note.summary && <Summary>{note.summary}</Summary>}
+            </Body>
+          </Card>
+        ))}
       </Container>
     </Section>
   );

@@ -1,0 +1,38 @@
+---
+title: Stardew Search
+date: 2026-05-24
+summary: An AI-powered search across three Stardew Valley wikis; why I built it, and the one trick that makes it work.
+---
+
+I play modded Stardew Valley. That means three wikis open in three tabs (the
+official one, Stardew Valley Expanded, and Ridgeside Village), and a constant
+low-grade panic about which one has the answer to "wait, who likes battery
+packs again?"
+
+[Stardew Search](/games/stardew) is my fix for that. One search box, all three
+wikis at once, with a short AI summary up top.
+
+The interesting bit isn't the parallel fan-out; that's just three fetches.
+It's the query rewriting. A naive search engine would type "best money maker"
+into MediaWiki and get back nothing useful, because no wiki article is titled
+"best money maker." So before searching, the query goes through OpenAI with a
+few-shot prompt that maps intent to actual article titles:
+
+- *"best money maker"* becomes `Wine`, `Ancient Fruit`, `Starfruit`, `Pig`
+- *"how to get married"* becomes `Marriage`, `Bouquet`, `Mermaid's Pendant`
+- *"krobus"* stays `Krobus`
+
+Simple lookups stay simple. Vague intent gets expanded into something the wiki
+can actually find.
+
+There's also a quick-answer pass: for factual questions like *"when is
+Abigail's birthday?"*, a regex heuristic gates a second OpenAI call that pulls
+the answer straight out of the infobox. The gate matters, because broad
+questions like "how do I farm?" would burn API calls and return nothing
+useful, so they skip the pass entirely.
+
+Stack is **Next.js 16 + OpenAI + MediaWiki API**, deployed on Vercel as a PWA
+so it installs to a phone home screen.
+
+It's live and I use it almost every play session. More features (saved
+searches, mod-pack filters) when the urge strikes.
